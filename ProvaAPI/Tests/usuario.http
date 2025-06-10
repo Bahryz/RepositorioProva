@@ -1,0 +1,20 @@
+@api_base_url = http://localhost:5265/api/evento 
+@token_usuario = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoidXN1YXJpb0BleGFtcGxlLmNvbSIsImp0aSI6IjE5MDRlMjg3LTI1NmEtNGY2ZS05YjVmLWY3ZThkNzhkMDk4MSIsImV4cCI6MTc0OTE0Njc0MX0.6VljVAP3i_x_ShwkDQIN2T6FCVUe3wOS3wDtOL_X2Sk 
+
+### 1. Cadastrar novo evento (requer autenticação)
+POST {{api_base_url}}/cadastrar
+Content-Type: application/json
+Authorization: Bearer {{token_usuario}}
+
+{
+    "nome": "Lançamento Livro Dev",
+    "local": "Auditório Principal",
+    "data": "2025-07-15T19:00:00"
+}
+
+### 2. Listar todos os eventos (público no ProvaA2)
+GET {{api_base_url}}/listar
+
+### 3. Listar eventos do usuário logado (requer autenticação)
+GET {{api_base_url}}/usuario
+Authorization: Bearer {{token_usuario}}

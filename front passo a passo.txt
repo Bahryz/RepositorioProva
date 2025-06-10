@@ -1,0 +1,210 @@
+
+===========================================================================================
+
+Passo 1: Criar o Projeto Next.js com Tailwind CSS
+Este comando cria um novo projeto Next.js já configurado com TypeScript e Tailwind CSS, que são a base do projeto de exemplo.
+
+Bash
+
+npx create-next-app@latest nome-do-seu-app --typescript --tailwind --eslint
+
+√ Would you like your code inside a `src/` directory? ... No / Yes
+√ Would you like to use App Router? (recommended) ... No / Yes
+√ Would you like to use Turbopack for `next dev`? ... No / Yes
+√ Would you like to customize the import alias (`@/*` by default)? ... No / Yes
+
+
+cd nome-do-seu-app
+===========================================================================================
+
+Passo 2: Instalar a Biblioteca para Requisições HTTP (Axios)
+O projeto utiliza o Axios para se comunicar com a API. Instale-o como uma dependência.
+
+Bash
+
+npm install axios
+===========================================================================================
+
+Passo 3: Estrutura de Pastas e Arquivos
+Organize o projeto criando as seguintes pastas e arquivos dentro de src/ para manter o código limpo e escalável.
+
+app/: Contém as rotas e páginas da aplicação.
+
+layout.tsx: Layout principal que envolve todas as páginas.
+globals.css: Estilos globais.
+page.tsx: A página inicial (/).
+page.module.css
+
+produto/listar/page.tsx: A página para listar produtos (/produto/listar).
+usuario/login/page.tsx: A página de login (/usuario/login).
+
+
+services/: Centraliza a lógica de comunicação com a API.
+api.ts: Configuração da instância do Axios.
+
+types/: Define os tipos TypeScript para os dados da aplicação.
+produto.ts: Interface para o modelo Produto.
+===========================================================================================
+
+Passo 4: Definir Tipos (TypeScript)
+Crie o arquivo que define a estrutura de dados de um produto.
+
+src/types/produto.ts
+
+TypeScript
+
+export interface Produto {
+    id: number;
+    nome: string;
+    criadoEm: string; 
+}
+===========================================================================================
+
+Passo 5: Configurar o Cliente API (Axios)
+Crie um arquivo para configurar a URL base da sua API. Isso facilita a manutenção e evita a repetição de URLs.
+
+src/services/api.ts
+
+TypeScript
+
+import axios from 'axios';
+
+const api = axios.create({
+  // Endereço da sua API back-end
+  baseURL: 'http://localhost:5223/api',
+});
+
+export default api;
+Observação: A porta 5223 foi identificada no arquivo launchSettings.json do projeto Ecommerce/API. Certifique-se de que sua API esteja rodando neste endereço.
+
+===========================================================================================
+
+Passo 6: Criar a Página de Listagem de Produtos
+Esta página buscará os dados da API e os exibirá em um formato de tabela.
+
+src/app/produto/listar/page.tsx
+
+TypeScript
+
+'use client';
+
+import { useEffect, useState } from 'react';
+import api from '@/services/api';
+import { Produto } from '@/types/produto';
+
+export default function ListarProdutos() {
+  const [produtos, setProdutos] = useState<Produto[]>([]);
+
+  useEffect(() => {
+    async function fetchProdutos() {
+      try {
+        const response = await api.get('/produto/listar');
+        setProdutos(response.data);
+      } catch (error) {
+        console.error('Erro ao buscar produtos:', error);
+      }
+    }
+    fetchProdutos();
+  }, []);
+
+ return (
+    <div className="container mx-auto p-4">
+        <h1 className="text-2xl font-bold mb-4">Lista de Produtos</h1>
+        <table className="min-w-full bg-white border">
+            <thead>
+                <tr>
+                    <th className="py-2 px-4 border-b">Nome</th>
+                    <th className="py-2 px-4 border-b">Criado Em</th>
+                </tr>
+            </thead>
+            <tbody>
+                {produtos.map((produto) => (
+                    <tr key={produto.id}>
+                        <td className="py-2 px-4 border-b">{produto.nome}</td>
+                        <td className="py-2 px-4 border-b">{new Date(produto.criadoEm).toLocaleDateString()}</td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    </div>
+);
+}
+===========================================================================================
+
+Passo 7: Criar a Página de Login
+Crie o formulário de login. A lógica de autenticação (envio de dados para a API e armazenamento de token) seria adicionada aqui.
+
+src/app/usuario/login/page.tsx
+
+TypeScript
+
+'use client';
+
+import { useState } from 'react';
+
+export default function Login() {
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    // Lógica para chamar a API de login
+    console.log('Tentando fazer login com:', { email, senha });
+    // Exemplo:
+    // try {
+    //   const response = await api.post('/usuario/login', { email, senha });
+    //   const token = response.data.token;
+    //   // Salvar o token (ex: localStorage) e redirecionar
+    // } catch (error) {
+    //   console.error('Falha no login', error);
+    // }
+  };
+
+  return (
+    <div className="flex items-center justify-center h-screen">
+      <form onSubmit={handleLogin} className="bg-white p-6 rounded shadow-md w-80">
+        <h1 className="text-2xl font-bold mb-4">Login</h1>
+        <div className="mb-4">
+          <label className="block text-sm font-bold mb-2" htmlFor="email">
+            Email
+          </label>
+          <input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
+            required
+          />
+        </div>
+        <div className="mb-6">
+          <label className="block text-sm font-bold mb-2" htmlFor="password">
+            Senha
+          </label>
+          <input
+            id="password"
+            type="password"
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
+            required
+          />
+        </div>
+        <button
+          type="submit"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
+        >
+          Entrar
+        </button>
+      </form>
+    </div>
+  );
+}
+===========================================================================================
+
+Passo 8: Rodar a Aplicação
+Com a API de backend em execução, inicie o servidor de desenvolvimento do Next.js.
+
+Bash
+
+npm run dev

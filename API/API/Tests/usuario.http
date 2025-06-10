@@ -1,0 +1,61 @@
+@url_base = http://localhost:5058/api/usuario
+
+### 1. Cadastrar um usuário administrador
+POST {{url_base}}/cadastrar
+Content-Type: application/json
+
+{
+    "email" : "admin@email.com",
+    "senha" : "123",
+    "permissao": 1
+}
+
+### 2. Cadastrar um usuário comum
+POST {{url_base}}/cadastrar
+Content-Type: application/json
+
+{
+    "email" : "usuario@email.com",
+    "senha" : "456",
+    "permissao": 0
+}
+
+
+### 3. Fazer login
+# Depois de enviar esta requisição, copie o token da resposta.
+POST {{url_base}}/login
+Content-Type: application/json
+
+{
+    "email" : "admin@email.com",
+    "senha" : "123"
+}
+
+
+### 4. Listar todos os usuários (Requer Admin)
+# Cole o token que você copiou do login aqui embaixo.
+GET {{url_base}}/listar
+Authorization: Bearer COLE_SEU_TOKEN_AQUI
+
+
+### 5. Buscar usuário por ID (Requer Admin)
+# Altere o '1' e cole o token.
+GET {{url_base}}/1
+Authorization: Bearer COLE_SEU_TOKEN_AQUI
+
+
+### 6. Atualizar um usuário (Requer Admin ou o próprio usuário)
+# Altere o '2' e cole o token.
+PUT {{url_base}}/2
+Authorization: Bearer COLE_SEU_TOKEN_AQUI
+Content-Type: application/json
+
+{
+    "email" : "usuario.novo@email.com"
+}
+
+
+### 7. Deletar um usuário (Requer Admin)
+# Altere o '2' e cole o token.
+DELETE {{url_base}}/2
+Authorization: Bearer COLE_SEU_TOKEN_AQUI
