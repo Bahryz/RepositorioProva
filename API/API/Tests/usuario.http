@@ -35,19 +35,19 @@ Content-Type: application/json
 ### 4. Listar todos os usuários (Requer Admin)
 # Cole o token que você copiou do login aqui embaixo.
 GET {{url_base}}/listar
-Authorization: Bearer COLE_SEU_TOKEN_AQUI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW5AZW1haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiYWRtaW5pc3RyYWRvciIsImV4cCI6MTc0OTcwNDk5NX0.cEPUn5uG1mFWtKXf-21N7chGJbEDGwPVFuqRMjwuxLs
 
 
 ### 5. Buscar usuário por ID (Requer Admin)
 # Altere o '1' e cole o token.
 GET {{url_base}}/1
-Authorization: Bearer COLE_SEU_TOKEN_AQUI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW5AZW1haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiYWRtaW5pc3RyYWRvciIsImV4cCI6MTc0OTcwNDk5NX0.cEPUn5uG1mFWtKXf-21N7chGJbEDGwPVFuqRMjwuxLs
 
 
 ### 6. Atualizar um usuário (Requer Admin ou o próprio usuário)
 # Altere o '2' e cole o token.
 PUT {{url_base}}/2
-Authorization: Bearer COLE_SEU_TOKEN_AQUI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW5AZW1haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiYWRtaW5pc3RyYWRvciIsImV4cCI6MTc0OTcwNDk5NX0.cEPUn5uG1mFWtKXf-21N7chGJbEDGwPVFuqRMjwuxLs
 Content-Type: application/json
 
 {
@@ -58,4 +58,4 @@ Content-Type: application/json
 ### 7. Deletar um usuário (Requer Admin)
 # Altere o '2' e cole o token.
 DELETE {{url_base}}/2
-Authorization: Bearer COLE_SEU_TOKEN_AQUI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW5AZW1haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiYWRtaW5pc3RyYWRvciIsImV4cCI6MTc0OTcwNDk5NX0.cEPUn5uG1mFWtKXf-21N7chGJbEDGwPVFuqRMjwuxLs

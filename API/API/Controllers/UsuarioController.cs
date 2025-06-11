@@ -38,13 +38,23 @@ public class UsuarioController : ControllerBase
     [AllowAnonymous]
     public IActionResult Login([FromBody] Usuario usuario)
     {
-        Usuario? usuarioExistente = _usuarioRepository.BuscarUsuarioPorEmailSenha(usuario.Email, usuario.Senha);
-        if (usuarioExistente == null)
-        {
-            return Unauthorized(new { mensagem = "Usuário ou senha inválidos!" });
-        }
-        string token = GerarToken(usuarioExistente);
-        return Ok(new { token });
+    Console.WriteLine($"Tentativa de login com Email: '{usuario.Email}' e Senha: '{usuario.Senha}'");
+
+    Usuario? usuarioExistente = _usuarioRepository.BuscarUsuarioPorEmailSenha(usuario.Email, usuario.Senha);
+    
+    if (usuarioExistente == null)
+    {
+        Console.WriteLine("--> RESULTADO: Usuário não encontrado no banco com essas credenciais.");
+        return Unauthorized(new { mensagem = "Usuário ou senha inválidos!" });
+    }
+    
+    string token = GerarToken(usuarioExistente);
+
+    return Ok(new
+    {
+        token = token,
+        permissao = usuarioExistente.Permissao.ToString().ToLower()
+    });
     }
 
     [HttpGet("listar")]

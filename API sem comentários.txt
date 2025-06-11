@@ -32,13 +32,14 @@ Execute estes comandos no terminal, dentro da pasta do projeto API.
 
 Bash
 
-dotnet add package Microsoft.EntityFrameworkCore
-dotnet add package Microsoft.EntityFrameworkCore.Design
-dotnet add package Microsoft.EntityFrameworkCore.Tools
-dotnet add package Pomelo.EntityFrameworkCore.MySql
-dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
+dotnet add package Microsoft.EntityFrameworkCore --version 8
+dotnet add package Microsoft.EntityFrameworkCore.Design --version 8
+dotnet add package Microsoft.EntityFrameworkCore.Tools --version 8
+dotnet add package Pomelo.EntityFrameworkCore.MySql --version 8
+dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer --version 8
 dotnet add package Swashbuckle.AspNetCore
 dotnet add package Microsoft.AspNetCore.Cors
+
 Instalar/Atualizar a ferramenta global dotnet-ef:
 
 Bash
@@ -386,14 +387,14 @@ public class ProdutoController : ControllerBase
 
 Controllers/UsuarioController.cs
 
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using API.Data;
-using API.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using API.Models;
+using API.Data;
+using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace API.Controllers;
 
@@ -403,6 +404,7 @@ public class UsuarioController : ControllerBase
 {
     private readonly IUsuarioRepository _usuarioRepository;
     private readonly IConfiguration _configuration;
+
     public UsuarioController(IUsuarioRepository usuarioRepository, IConfiguration configuration)
     {
         _usuarioRepository = usuarioRepository;
@@ -410,10 +412,9 @@ public class UsuarioController : ControllerBase
     }
 
     [HttpPost("cadastrar")]
-    [AllowAnonymous] // Permite cadastro sem autenticação
+    [AllowAnonymous]
     public IActionResult Cadastrar([FromBody] Usuario usuario)
     {
-        // Regra de negócio: verificar se o e-mail já existe
         if (_usuarioRepository.BuscarPorEmail(usuario.Email) != null)
         {
             return BadRequest("Este e-mail já está em uso.");
@@ -423,19 +424,24 @@ public class UsuarioController : ControllerBase
     }
 
     [HttpPost("login")]
-    [AllowAnonymous] // Permite login sem autenticação
+    [AllowAnonymous]
     public IActionResult Login([FromBody] Usuario usuario)
     {
-        Usuario? usuarioExistente = _usuarioRepository.BuscarUsuarioPorEmailSenha(usuario.Email, usuario.Senha);
-        if (usuarioExistente == null)
-        {
-            return Unauthorized(new { mensagem = "Usuário ou senha inválidos!" });
-        }
-        string token = GerarToken(usuarioExistente);
-        return Ok(new { token });
+    Usuario? usuarioExistente = _usuarioRepository.BuscarUsuarioPorEmailSenha(usuario.Email, usuario.Senha);
+    if (usuarioExistente == null)
+    {
+        return Unauthorized(new { mensagem = "Usuário ou senha inválidos!" });
+    }
+    
+    string token = GerarToken(usuarioExistente);
+
+    return Ok(new
+    {
+        token = token,
+        permissao = usuarioExistente.Permissao.ToString().ToLower()
+    });
     }
 
-    // ENDPOINTS ADICIONADOS
     [HttpGet("listar")]
     [Authorize(Roles = "administrador")]
     public IActionResult Listar()
@@ -452,7 +458,7 @@ public class UsuarioController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    [Authorize] // O próprio usuário ou um admin pode alterar
+    [Authorize]
     public IActionResult Atualizar([FromRoute] int id, [FromBody] Usuario usuario)
     {
         var usuarioLogadoEmail = User.Identity?.Name;
@@ -464,20 +470,16 @@ public class UsuarioController : ControllerBase
             return NotFound();
         }
 
-        // Regra: Somente o próprio usuário ou um admin pode alterar
         if (usuarioExistente.Email != usuarioLogadoEmail && usuarioLogadoRole != "administrador")
         {
             return Forbid();
         }
 
         usuarioExistente.Email = usuario.Email;
-        // Não permita a alteração da senha por este endpoint para segurança
-        // Considere criar um endpoint específico para "alterar senha"
-        
         _usuarioRepository.Atualizar(usuarioExistente);
         return Ok(usuarioExistente);
     }
-    
+
     [HttpDelete("{id}")]
     [Authorize(Roles = "administrador")]
     public IActionResult Deletar([FromRoute] int id)
@@ -490,7 +492,6 @@ public class UsuarioController : ControllerBase
         _usuarioRepository.Deletar(id);
         return Ok(new { message = "Usuário deletado com sucesso!" });
     }
-
 
     [ApiExplorerSettings(IgnoreApi = true)]
     public string GerarToken(Usuario usuario)
@@ -506,7 +507,7 @@ public class UsuarioController : ControllerBase
 
         var token = new JwtSecurityToken(
             claims: claims,
-            expires: DateTime.Now.AddHours(8), // Aumentei a expiração
+            expires: DateTime.Now.AddHours(8),
             signingCredentials: creds
         );
         

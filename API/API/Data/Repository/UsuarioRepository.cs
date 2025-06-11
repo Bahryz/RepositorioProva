@@ -23,9 +23,9 @@ public class UsuarioRepository : IUsuarioRepository
 
     public Usuario? BuscarUsuarioPorEmailSenha(string email, string senha)
     {
-        return _context.Usuarios.FirstOrDefault(x => x.Email == email && x.Senha == senha);
+    
+    return _context.Usuarios.FirstOrDefault(u => u.Email == email && u.Senha == senha);
     }
-
     public Usuario? BuscarPorId(int id)
     {
         return _context.Usuarios.Find(id);

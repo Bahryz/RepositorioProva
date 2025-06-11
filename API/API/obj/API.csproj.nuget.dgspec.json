@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\phbah\\Desktop\\Projetinho\\estudo\\Front + API\\API\\API\\API.csproj": {}
+    "C:\\Users\\phbah\\Desktop\\repositorio prova\\RepositorioProva\\API\\API\\API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\phbah\\Desktop\\Projetinho\\estudo\\Front + API\\API\\API\\API.csproj": {
+    "C:\\Users\\phbah\\Desktop\\repositorio prova\\RepositorioProva\\API\\API\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\phbah\\Desktop\\Projetinho\\estudo\\Front + API\\API\\API\\API.csproj",
+        "projectUniqueName": "C:\\Users\\phbah\\Desktop\\repositorio prova\\RepositorioProva\\API\\API\\API.csproj",
         "projectName": "API",
-        "projectPath": "C:\\Users\\phbah\\Desktop\\Projetinho\\estudo\\Front + API\\API\\API\\API.csproj",
+        "projectPath": "C:\\Users\\phbah\\Desktop\\repositorio prova\\RepositorioProva\\API\\API\\API.csproj",
         "packagesPath": "C:\\Users\\phbah\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\phbah\\Desktop\\Projetinho\\estudo\\Front + API\\API\\API\\obj\\",
+        "outputPath": "C:\\Users\\phbah\\Desktop\\repositorio prova\\RepositorioProva\\API\\API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -48,6 +48,10 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.0.3, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[9.0.5, )"
